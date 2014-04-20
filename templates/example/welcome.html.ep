@@ -5,3 +5,25 @@ This page was generated from the template "templates/example/welcome.html.ep"
 and the layout "templates/layouts/default.html.ep",
 <a href="<%== url_for %>">click here</a> to reload the page or
 <a href="/index.html">here</a> to move forward to a static page.
+
+% my $sth = db->prepare('SELECT * FROM people');
+% $sth->execute;
+  <form action="<%=url_for('insert')->to_abs%>" method="post">
+    Name: <input type="text" name="name"> Age: <input type="text" name="age"> <input type="submit" value="Add">
+  </form>
+  <br>
+  Data: <br>
+  <table border="1">
+    <tr>
+      <th>Name</th>
+      <th>Age</th>
+    </tr>
+    % while (my $row = $sth->fetchrow_arrayref) {
+      <tr>
+        % for my $text (@$row) {
+          <td><%= $text %></td>
+        % }
+      </tr>
+    % }
+  </table>
+

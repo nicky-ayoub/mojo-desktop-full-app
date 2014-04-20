@@ -1,11 +1,34 @@
 #!/usr/bin/env perl
 
+use 5.014;
 use strict;
 use warnings;
+use Carp;
+use Browser::Open qw( open_browser );
+use Mojo::IOLoop;
 
 use FindBin;
 BEGIN { unshift @INC, "$FindBin::Bin/../lib" }
 
+my $port = Mojo::IOLoop->generate_port;
+my $url  = "http://127.0.0.1:$port";
+
+my $pid = fork;
+
+if ( !defined $pid ) {
+    croak "Cannot fork: $!";
+}
+elsif ( $pid == 0 ) {
+
+    # child process
+    sleep 1;    # Just because...
+    open_browser($url);
+    say "Here we go...";
+}
+else {
+
 # Start command line interface for application
 require Mojolicious::Commands;
-Mojolicious::Commands->start_app('DesktopFullApp');
+
+Mojolicious::Commands->start_app('DesktopFullApp', 'daemon', '--listen' =>$url);
+}
