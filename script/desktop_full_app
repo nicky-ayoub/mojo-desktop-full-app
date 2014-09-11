@@ -10,7 +10,7 @@ use Mojo::IOLoop;
 use FindBin;
 BEGIN { unshift @INC, "$FindBin::Bin/../lib" }
 
-my $port = Mojo::IOLoop->generate_port;
+my $port = Mojo::IOLoop::Server->generate_port;
 my $url  = "http://127.0.0.1:$port";
 
 my $pid = fork;
