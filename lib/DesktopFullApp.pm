@@ -15,9 +15,6 @@ sub startup {
     # shortcut for use in template
    $self->helper( db => sub { $dbh });
 
-  # Documentation browser under "/perldoc"
-  $self->plugin('PODRenderer');
-
   my $config = $self->plugin('Config');
 
   # Router
